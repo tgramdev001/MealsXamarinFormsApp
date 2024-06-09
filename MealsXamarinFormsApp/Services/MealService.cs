@@ -1,5 +1,8 @@
 ﻿using MealsXamarinFormsApp.Models;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -11,13 +14,7 @@ namespace MealsXamarinFormsApp.Services
 
         public MealService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
-        }
-
-        public async Task<MealResponse> GetMealAsync(string mealId)
-        {
-            var response = await _httpClient.GetStringAsync($"https://www.themealdb.com/api/json/v1/1/lookup.php?i={mealId}");
-            return JsonConvert.DeserializeObject<MealResponse>(response);
+            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
         }
 
         public async Task<CategoryResponse> GetCategoriesAsync()
@@ -26,10 +23,34 @@ namespace MealsXamarinFormsApp.Services
             return JsonConvert.DeserializeObject<CategoryResponse>(response);
         }
 
-        public async Task<MealSummaryResponse> GetMealSummaryAsync(string mealId)
+        public async Task<Meal> GetMealDetailsAsync(string idMeal)
         {
-            var response = await _httpClient.GetStringAsync($"https://www.themealdb.com/api/json/v1/1/filter.php?c={mealId}");
-            return JsonConvert.DeserializeObject<MealSummaryResponse>(response);
+            var url = $"https://www.themealdb.com/api/json/v1/1/lookup.php?i={idMeal}";
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Failed to retrieve data: {response.ReasonPhrase}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<MealResponse>(content);
+            return result.Meals[0];
+        }
+
+        public async Task<List<MealSummary>> GetMealSummaryAsync(string category)
+        {
+            var url = $"https://www.themealdb.com/api/json/v1/1/filter.php?c={category}";
+            var response = await _httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"Failed to retrieve data: {response.ReasonPhrase}");
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeObject<MealSummaryResponse>(content);
+            return result.Meals;
         }
     }
 }

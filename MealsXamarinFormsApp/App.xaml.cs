@@ -1,5 +1,6 @@
 ﻿using MealsXamarinFormsApp.Services;
 using MealsXamarinFormsApp.ViewModels;
+using MealsXamarinFormsApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 using Xamarin.Forms;
@@ -13,7 +14,7 @@ namespace MealsXamarinFormsApp
         {
             InitializeComponent();
             ConfigureServices();
-            MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new CategoriesPage());
         }
 
         private void ConfigureServices()

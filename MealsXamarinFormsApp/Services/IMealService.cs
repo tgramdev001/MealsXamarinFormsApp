@@ -1,12 +1,13 @@
 ﻿using MealsXamarinFormsApp.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MealsXamarinFormsApp.Services
 {
     public interface IMealService
     {
-        Task<MealResponse> GetMealAsync(string mealId);
-        Task<MealSummaryResponse> GetMealSummaryAsync(string mealId);
+        Task<Meal> GetMealDetailsAsync(string idMeal);
+        Task<List<MealSummary>> GetMealSummaryAsync(string category);
         Task<CategoryResponse> GetCategoriesAsync();
     }
 }

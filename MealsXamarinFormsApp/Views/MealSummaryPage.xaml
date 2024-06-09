@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MealsXamarinFormsApp.Views.MealSummaryPage">
+    <ListView ItemsSource="{Binding MealSummaries}" ItemSelected="OnItemSelected" >
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell >
+                    <StackLayout Orientation="Horizontal" Padding="10">
+                        <Image Source="{Binding StrMealThumb}" HeightRequest="100" WidthRequest="100"/>
+                        <StackLayout Orientation="Vertical" Padding="10,0,0,0">
+                            <Label Text="{Binding StrMeal}" FontSize="Medium" FontAttributes="Bold"/>
+                            <Label Text="{Binding StrCategory}" FontSize="Small" LineBreakMode="TailTruncation" MaxLines="3"/>
+                        </StackLayout>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage>
