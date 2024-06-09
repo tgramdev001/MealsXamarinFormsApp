@@ -31,9 +31,9 @@ namespace MealsXamarinFormsApp.ViewModels
             Meals = new ObservableCollection<MealSummary>();
         }
 
-        public async Task LoadMealSummaryAsync()
+        public async Task LoadMealSummaryAsync(string mealId)
         {
-            var mealSummaryResponse = await _mealService.GetMealSummaryAsync();
+            var mealSummaryResponse = await _mealService.GetMealSummaryAsync(mealId);
             if (mealSummaryResponse?.Meals != null)
             {
                 foreach (var meal in mealSummaryResponse.Meals)
