@@ -7,10 +7,12 @@
             <CollectionView ItemsSource="{Binding Categories}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout>
-                            <Image Source="{Binding StrCategoryThumb}" HeightRequest="100"/>
-                            <Label Text="{Binding StrCategory}" FontSize="Medium"/>
-                            <Label Text="{Binding StrCategoryDescription}" FontSize="Small"/>
+                        <StackLayout Orientation="Horizontal" Padding="10">
+                            <Image Source="{Binding StrCategoryThumb}" HeightRequest="60" WidthRequest="60"/>
+                            <StackLayout Orientation="Vertical" Padding="10,0,0,0">
+                                <Label Text="{Binding StrCategory}" FontSize="Medium" FontAttributes="Bold"/>
+                                <Label Text="{Binding StrCategoryDescription}" FontSize="Small" LineBreakMode="TailTruncation" MaxLines="3"/>
+                            </StackLayout>
                         </StackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
