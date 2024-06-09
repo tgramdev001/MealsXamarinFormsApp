@@ -4,19 +4,21 @@
              x:Class="MealsXamarinFormsApp.Views.CategoriesPage">
     <ContentPage.Content>
         <StackLayout>
-            <CollectionView ItemsSource="{Binding Categories}">
-                <CollectionView.ItemTemplate>
+            <ListView ItemsSource="{Binding Categories}" ItemSelected="OnItemSelected">
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Orientation="Horizontal" Padding="10">
-                            <Image Source="{Binding StrCategoryThumb}" HeightRequest="60" WidthRequest="60"/>
-                            <StackLayout Orientation="Vertical" Padding="10,0,0,0">
-                                <Label Text="{Binding StrCategory}" FontSize="Medium" FontAttributes="Bold"/>
-                                <Label Text="{Binding StrCategoryDescription}" FontSize="Small" LineBreakMode="TailTruncation" MaxLines="3"/>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" Padding="10">
+                                <Image Source="{Binding StrCategoryThumb}" HeightRequest="100" WidthRequest="100"/>
+                                <StackLayout Orientation="Vertical" Padding="10,0,0,0">
+                                    <Label Text="{Binding StrCategory}" FontSize="Medium" FontAttributes="Bold"/>
+                                    <Label Text="{Binding StrCategoryDescription}" FontSize="Small" LineBreakMode="TailTruncation" MaxLines="3"/>
+                                </StackLayout>
                             </StackLayout>
-                        </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

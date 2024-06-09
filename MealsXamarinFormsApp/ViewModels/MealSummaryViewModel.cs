@@ -2,50 +2,54 @@
 using MealsXamarinFormsApp.Services;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MealsXamarinFormsApp.ViewModels
 {
     public class MealSummaryViewModel : BindableObject
     {
+        private readonly IMealService _mealService;
 
-        private ObservableCollection<MealSummary> _meals;
-        public ObservableCollection<MealSummary> Meals
+        private string _category;
+        public string Category
         {
-            get => _meals;
+            get => _category;
             set
             {
-                _meals = value;
+                _category = value;
+                OnPropertyChanged();
+                LoadSummary(Category); // Reload the summary when category changes
+            }
+        }
+
+        private List<MealSummary> _mealSummaries;
+        public List<MealSummary> MealSummaries
+        {
+            get => _mealSummaries;
+            set
+            {
+                _mealSummaries = value;
                 OnPropertyChanged();
             }
         }
 
-        private readonly IMealService _mealService;
-
-        public MealSummaryViewModel(IMealService mealService)
+        public MealSummaryViewModel(IMealService mealService, string category)
         {
-            _mealService = mealService;
-            Meals = new ObservableCollection<MealSummary>();
+            _mealService = mealService ?? throw new ArgumentNullException(nameof(mealService));
+            Category = category;
         }
 
-        public async Task LoadMealSummaryAsync(string mealId)
+        private async void LoadSummary(string category)
         {
-            var mealSummaryResponse = await _mealService.GetMealSummaryAsync(mealId);
-            if (mealSummaryResponse?.Meals != null)
+            try
             {
-                foreach (var meal in mealSummaryResponse.Meals)
-                {
-                    Meals.Add(new MealSummary
-                    {
-                        IdMeal = meal.IdMeal,
-                        StrMeal = meal.StrMeal,
-                        StrMealThumb = meal.StrMealThumb
-                    });
-                }
+                MealSummaries = await _mealService.GetMealSummaryAsync(category);
+            }
+            catch (Exception ex)
+            {
+                // Handle error
             }
         }
     }
+
 }

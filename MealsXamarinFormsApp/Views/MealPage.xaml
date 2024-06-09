@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MealsXamarinFormsApp.Views.MealPage">
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Label Text="{Binding Meal.strMeal}" FontSize="Large" HorizontalOptions="CenterAndExpand" Margin="0,10,0,20"/>
+            <Label Text="{Binding Meal.strCategory}" FontSize="Medium" Margin="0,0,0,10"/>
+            <Label Text="{Binding Meal.strArea}" FontSize="Medium" Margin="0,0,0,10"/>
+            <Image Source="{Binding Meal.strMealThumb}" HeightRequest="200" WidthRequest="200" Margin="0,10,0,10"/>
+            <Label Text="{Binding Meal.strInstructions}" FontSize="Medium" Margin="0,0,0,10"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

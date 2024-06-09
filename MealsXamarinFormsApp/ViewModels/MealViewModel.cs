@@ -1,42 +1,56 @@
 ﻿using MealsXamarinFormsApp.Models;
 using MealsXamarinFormsApp.Services;
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace MealsXamarinFormsApp.ViewModels
 {
-    public class MealViewModel : BindableObject
+    public class MealViewModel : INotifyPropertyChanged
     {
-        private ObservableCollection<Meal> _meals;
-        public ObservableCollection<Meal> Meals
+        private readonly IMealService _mealService;
+        private Meal _meal;
+
+        public Meal Meal
         {
-            get => _meals;
+            get => _meal;
             set
             {
-                _meals = value;
+                _meal = value;
                 OnPropertyChanged();
             }
         }
 
-        private readonly IMealService _mealService;
-
-        public MealViewModel(IMealService mealService)
+        public MealViewModel(IMealService mealService, string idMeal)
         {
-            _mealService = mealService;
-            Meals = new ObservableCollection<Meal>();
+            _mealService = mealService ?? throw new ArgumentNullException(nameof(mealService));
+            Task.Run(async () =>
+            {
+                await LoadMeal(idMeal);
+            }).Wait();
         }
 
-        public async Task LoadMealAsync(string mealId)
+        private async Task LoadMeal(string idMeal)
         {
-            var mealResponse = await _mealService.GetMealAsync(mealId);
-            if (mealResponse?.Meals != null)
+            try
             {
-                foreach (var meal in mealResponse.Meals)
-                {
-                    Meals.Add(meal);
-                }
+                Meal = await _mealService.GetMealDetailsAsync(idMeal);
             }
+            catch (Exception ex)
+            {
+                // Handle error
+                Console.WriteLine($"Error loading meal: {ex.Message}");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
