@@ -38,7 +38,12 @@ namespace MealsXamarinFormsApp.ViewModels
             {
                 foreach (var meal in mealSummaryResponse.Meals)
                 {
-                    Meals.Add(meal);
+                    Meals.Add(new MealSummary
+                    {
+                        IdMeal = meal.IdMeal,
+                        StrMeal = meal.StrMeal,
+                        StrMealThumb = meal.StrMealThumb
+                    });
                 }
             }
         }
